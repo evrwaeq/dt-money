@@ -5,7 +5,8 @@
         "backgroundColor": "#ffffff",
         "foregroundImage": "./assets/adaptive-icon.png"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.anonymous.dtmoney"
     },
     "icon": "./assets/icon.png",
     "ios": {

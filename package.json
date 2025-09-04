@@ -17,8 +17,8 @@
   "name": "dt-money",
   "private": true,
   "scripts": {
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "lint": "expo lint",
     "start": "expo start",
     "web": "expo start --web"
