@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { Text, View } from 'react-native'
+import { AppInput } from '@/components/AppInput'
 
 interface FormLoginParams {
   email: string
@@ -14,9 +14,14 @@ const LoginForm = () => {
   } = useForm<FormLoginParams>()
 
   return (
-    <View>
-      <Text className="text-white">login form</Text>
-    </View>
+    <>
+      <AppInput
+        control={control}
+        name="email"
+        label="email"
+        placeholder="mail@example.com"
+      />
+    </>
   )
 }
 
