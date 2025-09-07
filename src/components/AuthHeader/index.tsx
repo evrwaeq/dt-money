@@ -7,10 +7,10 @@ const AuthHeader = () => {
   if (keyboardIsVisible) return <></>
 
   return (
-    <View className="items-center justify-center w-full min-h-48">
+    <View className="items-center justify-center w-full min-h-32">
       <Image
         source={require('@/assets/Logo.png')}
-        className="h-[48px] w-[255px]"
+        className="h-[3rem] w-[16rem]"
       />
     </View>
   )
