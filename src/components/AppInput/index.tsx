@@ -10,6 +10,7 @@ import { Control, Controller, FieldValues, Path } from 'react-hook-form'
 import { MaterialIcons } from '@expo/vector-icons'
 import clsx from 'clsx'
 import { colors } from '@/shared/colors'
+import { ErrorMessage } from '../ErrorMessage'
 
 interface AppInputParams<T extends FieldValues> extends TextInputProps {
   control: Control<T>
@@ -41,7 +42,6 @@ const AppInput = <T extends FieldValues>({
       control={control}
       name={name}
       render={({ field: { onChange, value }, fieldState: { error } }) => {
-        console.log(error)
         return (
           <View className="w-full mt-4">
             {label && (
@@ -88,6 +88,8 @@ const AppInput = <T extends FieldValues>({
                 </TouchableOpacity>
               )}
             </TouchableOpacity>
+
+            {error && <ErrorMessage>{error.message}</ErrorMessage>}
           </View>
         )
       }}
