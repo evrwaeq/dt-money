@@ -1,9 +1,11 @@
 import { Text, View } from 'react-native'
-import { useForm } from 'react-hook-form'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { PublicStackParamsList } from '@/routes/PublicRoutes'
 import { AppButton } from '@/components/AppButton'
 import { AppInput } from '@/components/AppInput'
+import { schema } from './schema'
 
 interface FormRegisterParams {
   email: string
@@ -17,9 +19,19 @@ const RegisterForm = () => {
     control,
     handleSubmit,
     formState: { isSubmitting }
-  } = useForm<FormRegisterParams>()
+  } = useForm<FormRegisterParams>({
+    defaultValues: {
+      email: '',
+      name: '',
+      password: '',
+      confirmPassword: ''
+    },
+    resolver: yupResolver(schema)
+  })
 
   const navigation = useNavigation<NavigationProp<PublicStackParamsList>>()
+
+  const onSubmit = async () => {}
 
   return (
     <>
@@ -58,7 +70,9 @@ const RegisterForm = () => {
       ></AppInput>
 
       <View className="flex-1 justify-between mt-8 mb-6 min-h-[15rem]">
-        <AppButton iconName="arrow-forward">Cadastrar</AppButton>
+        <AppButton iconName="arrow-forward" onPress={handleSubmit(onSubmit)}>
+          Cadastrar
+        </AppButton>
         <View>
           <Text className="mb-3 text-gray-300 text-base">
             Já possui uma conta?

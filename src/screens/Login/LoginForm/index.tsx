@@ -1,9 +1,11 @@
-import { useForm } from 'react-hook-form'
-import { AppInput } from '@/components/AppInput'
-import { AppButton } from '@/components/AppButton'
 import { Text, View } from 'react-native'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { PublicStackParamsList } from '@/routes/PublicRoutes'
+import { AppInput } from '@/components/AppInput'
+import { AppButton } from '@/components/AppButton'
+import { schema } from './schema'
 
 interface FormLoginParams {
   email: string
@@ -15,9 +17,17 @@ const LoginForm = () => {
     control,
     handleSubmit,
     formState: { isSubmitting }
-  } = useForm<FormLoginParams>()
+  } = useForm<FormLoginParams>({
+    defaultValues: {
+      email: '',
+      password: ''
+    },
+    resolver: yupResolver(schema)
+  })
 
   const navigation = useNavigation<NavigationProp<PublicStackParamsList>>()
+
+  const onSubmit = async () => {}
 
   return (
     <>
@@ -39,7 +49,9 @@ const LoginForm = () => {
       />
 
       <View className="flex-1 justify-between mt-8 mb-6 min-h-[15rem]">
-        <AppButton iconName="arrow-forward">Login</AppButton>
+        <AppButton iconName="arrow-forward" onPress={handleSubmit(onSubmit)}>
+          Login
+        </AppButton>
         <View>
           <Text className="mb-3 text-gray-300 text-base">
             Ainda não possui uma conta?
