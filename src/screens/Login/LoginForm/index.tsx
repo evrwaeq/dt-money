@@ -69,4 +69,4 @@ const LoginForm = () => {
   )
 }
 
-export { LoginForm }
+export { LoginForm, FormLoginParams }

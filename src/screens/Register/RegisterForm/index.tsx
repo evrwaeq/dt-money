@@ -90,4 +90,4 @@ const RegisterForm = () => {
   )
 }
 
-export { RegisterForm }
+export { RegisterForm, FormRegisterParams }
