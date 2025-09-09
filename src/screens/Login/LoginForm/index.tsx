@@ -2,7 +2,9 @@ import { Text, View } from 'react-native'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { AxiosError } from 'axios'
 import { PublicStackParamsList } from '@/routes/PublicRoutes'
+import { useAuthContext } from '@/context/auth.context'
 import { AppInput } from '@/components/AppInput'
 import { AppButton } from '@/components/AppButton'
 import { schema } from './schema'
@@ -25,9 +27,19 @@ const LoginForm = () => {
     resolver: yupResolver(schema)
   })
 
+  const { handleAuthenticate } = useAuthContext()
+
   const navigation = useNavigation<NavigationProp<PublicStackParamsList>>()
 
-  const onSubmit = async () => {}
+  const onSubmit = async (params: FormLoginParams) => {
+    try {
+      await handleAuthenticate(params)
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.error(error.response?.data)
+      }
+    }
+  }
 
   return (
     <>
