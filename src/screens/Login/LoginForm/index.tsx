@@ -2,11 +2,12 @@ import { Text, View } from 'react-native'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { AxiosError } from 'axios'
 import { PublicStackParamsList } from '@/routes/PublicRoutes'
 import { useAuthContext } from '@/context/auth.context'
+import { useSnackbarContext } from '@/context/snackbar.contex'
 import { AppInput } from '@/components/AppInput'
 import { AppButton } from '@/components/AppButton'
+import { AppError } from '@/shared/helpers/AppError'
 import { schema } from './schema'
 
 interface FormLoginParams {
@@ -28,6 +29,7 @@ const LoginForm = () => {
   })
 
   const { handleAuthenticate } = useAuthContext()
+  const { notify } = useSnackbarContext()
 
   const navigation = useNavigation<NavigationProp<PublicStackParamsList>>()
 
@@ -35,8 +37,11 @@ const LoginForm = () => {
     try {
       await handleAuthenticate(params)
     } catch (error) {
-      if (error instanceof AxiosError) {
-        console.error(error.response?.data)
+      if (error instanceof AppError) {
+        notify({
+          message: error.message,
+          messageType: 'ERROR'
+        })
       }
     }
   }
