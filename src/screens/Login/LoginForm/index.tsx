@@ -1,13 +1,13 @@
-import { Text, View } from 'react-native'
+import { ActivityIndicator, Text, View } from 'react-native'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { PublicStackParamsList } from '@/routes/PublicRoutes'
 import { useAuthContext } from '@/context/auth.context'
-import { useSnackbarContext } from '@/context/snackbar.contex'
 import { AppInput } from '@/components/AppInput'
 import { AppButton } from '@/components/AppButton'
-import { AppError } from '@/shared/helpers/AppError'
+import { useErrorHandler } from '@/shared/hooks/useErrorHandler'
+import { colors } from '@/shared/colors'
 import { schema } from './schema'
 
 interface FormLoginParams {
@@ -29,7 +29,7 @@ const LoginForm = () => {
   })
 
   const { handleAuthenticate } = useAuthContext()
-  const { notify } = useSnackbarContext()
+  const { handleError } = useErrorHandler()
 
   const navigation = useNavigation<NavigationProp<PublicStackParamsList>>()
 
@@ -37,12 +37,7 @@ const LoginForm = () => {
     try {
       await handleAuthenticate(params)
     } catch (error) {
-      if (error instanceof AppError) {
-        notify({
-          message: error.message,
-          messageType: 'ERROR'
-        })
-      }
+      handleError(error, 'Falha ao logar')
     }
   }
 
@@ -67,7 +62,7 @@ const LoginForm = () => {
 
       <View className="flex-1 justify-between mt-8 mb-6 min-h-[15rem]">
         <AppButton iconName="arrow-forward" onPress={handleSubmit(onSubmit)}>
-          Login
+          {isSubmitting ? <ActivityIndicator color={colors.white} /> : 'Login'}
         </AppButton>
         <View>
           <Text className="mb-3 text-gray-300 text-base">

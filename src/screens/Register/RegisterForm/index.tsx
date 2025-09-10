@@ -1,12 +1,13 @@
-import { Text, View } from 'react-native'
+import { ActivityIndicator, Text, View } from 'react-native'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { AxiosError } from 'axios'
 import { PublicStackParamsList } from '@/routes/PublicRoutes'
 import { useAuthContext } from '@/context/auth.context'
 import { AppButton } from '@/components/AppButton'
 import { AppInput } from '@/components/AppInput'
+import { useErrorHandler } from '@/shared/hooks/useErrorHandler'
+import { colors } from '@/shared/colors'
 import { schema } from './schema'
 
 interface FormRegisterParams {
@@ -32,6 +33,7 @@ const RegisterForm = () => {
   })
 
   const { handleRegister } = useAuthContext()
+  const { handleError } = useErrorHandler()
 
   const navigation = useNavigation<NavigationProp<PublicStackParamsList>>()
 
@@ -39,9 +41,7 @@ const RegisterForm = () => {
     try {
       await handleRegister(userData)
     } catch (error) {
-      if (error instanceof AxiosError) {
-        console.error(error.response?.data)
-      }
+      handleError(error, 'Falha ao cadastrar usuário')
     }
   }
 
@@ -83,7 +83,11 @@ const RegisterForm = () => {
 
       <View className="flex-1 justify-between mt-8 mb-6 min-h-[15rem]">
         <AppButton iconName="arrow-forward" onPress={handleSubmit(onSubmit)}>
-          Cadastrar
+          {isSubmitting ? (
+            <ActivityIndicator color={colors.white} />
+          ) : (
+            'Cadastrar'
+          )}
         </AppButton>
         <View>
           <Text className="mb-3 text-gray-300 text-base">
